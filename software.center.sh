@@ -1,6 +1,9 @@
 #! /bin/bash
-
-#from http://killhellokitty.deviantart.com/art/DeLorean-Dark-1-55-318612217
+#
+#  Fix software centre colours when using Delorean-Dark theme.
+#  These files revert back often when sofware-center is updated. 
+#  Sourced from http://killhellokitty.deviantart.com/art/DeLorean-Dark-1-55-318612217
+#
 
 #Backup original files
 cp /usr/share/software-center/ui/gtk3/css/softwarecenter.css /usr/share/software-center/ui/gtk3/css/softwarecenter.css.Original
