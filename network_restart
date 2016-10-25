@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Restart network manager on resume
+# Copy to /etc/pm/sleep.d/net-man_restart for example
+
+case ${1} in
+  resume|thaw)
+    #sudo service network-manager restart
+    /bin/systemctl restart network-manager.service
+;;
+esac

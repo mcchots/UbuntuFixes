@@ -1,0 +1,63 @@
+#!/bin/bash
+#copy tis file to /etc/NetworkManager/dispatcher.d/
+
+# nm sets this values
+INTERFACE=$1
+ACTION=$2
+
+HOSTNAMECHECK="mypc.myhouse.lan"
+SSID="Dynamite, Boom, TNT"
+SYNERGYNAME="mypc"
+SYNERGYSERVER="192.168.25.21"
+SYNERGYPORT="24800"
+USERNAME="Wiley"
+
+FQHOSTNAME=`hostname -A`
+IP=`ifconfig eth0 | grep "inet\ addr" | cut -d ":" -f2 | cut -d " " -f1`
+ESSID=`iwconfig wlan0 | grep ESSID | cut -d":" -f2 | sed 's/^[^"]*"\|"[^"]*$//g'`
+PID=`pidof synergyc`
+
+
+#logger -t AutoSynergy "PID: $PID"
+#logger -t AutoSynergy "SSID: $SSID"
+#logger -t AutoSynergy "SSID2: $SSID2"
+#logger -t AutoSynergy "IP: $IP"
+#logger -t AutoSynergy "ESSID: $ESSID"
+#logger -t AutoSynergy "Interface: $1"
+#logger -t AutoSynergy "Action: $2"
+
+
+if [ "$ACTION" == "up" ]; then
+
+	if [ "$INTERFACE" == "wlan0" ]; then
+		if [[ "$SSID" =~ "$ESSID" ]]; then
+			if [ -z "$PID" ]; then
+				logger -t AutoSynergy "Starting Synergy Client: $1 $2"
+				sudo -u "$USERNAME" /usr/bin/synergyc --no-tray --debug NOTE --name $SYNERGYNAME $SYNERGYSERVER:$SYNERGYPORT
+			fi
+		fi
+	fi
+	if [ "$INTERFACE" == "eth0" ]; then
+		logger -t AutoSynergy "eth0: up"
+		if [ $HOSTNAMECHECK == $FQHOSTNAME ]; then
+			logger -t AutoSynergy "Check IP"
+      			if [ -z "$PID" ]; then
+				logger -t AutoSynergy "Starting Synergy Client: $1 $2"
+				sudo -u "$USERNAME" /usr/bin/synergyc --no-tray --debug NOTE --name $SYNERGYNAME $SYNERGYSERVER:$SYNERGYPORT
+      			fi
+    		fi
+	fi
+fi
+
+if [ "$ACTION" == "down" ]; then
+
+	if [ "$HOSTNAMECHECK" != "$FQHOSTNAME" ] && ([[ ! "$SSID" =~ "$ESSID" ]]); then
+
+		logger -t AutoSynergy "Not at Work"
+
+		if [ ! -z "$PID" ]; then
+			logger -t AutoSynergy "Stopping Synergy Client: $1 $2"
+			kill -9 "$PID"
+		fi
+	fi
+fi

@@ -11,5 +11,5 @@ cp /usr/share/software-center/ui/gtk3/art/stipple.png /usr/share/software-center
 
 #Copy fixed files
 
-cp /usr/share/themes/delorean-dark/Software-Center/softwarecenter.css /usr/share/software-center/ui/gtk3/css/softwarecenter.css
-cp /usr/share/themes/delorean-dark/Software-Center/stipple.png /usr/share/software-center/ui/gtk3/art/stipple.png
+cp /usr/share/themes/delorean-dark-3.12/Software-Center/softwarecenter.css /usr/share/software-center/ui/gtk3/css/softwarecenter.css
+cp /usr/share/themes/delorean-dark-3.12/Software-Center/stipple.png /usr/share/software-center/ui/gtk3/art/stipple.png
